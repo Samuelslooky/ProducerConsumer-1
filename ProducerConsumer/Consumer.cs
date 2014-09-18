@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,8 +21,9 @@ namespace ProducerConsumer_øvelse
         {
             for (int i = 0; i < 100; i++)
             {
-                
-                
+                int takenNumber = Buffer.Take();
+                Console.WriteLine("The number: " + takenNumber + "has been consumed");
+
             }  
 
 

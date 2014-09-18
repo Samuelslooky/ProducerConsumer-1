@@ -11,12 +11,12 @@ namespace ProducerConsumer_øvelse
     public class BoundedBuffer 
     {
         public int Capacity { get; set; }
-        public Queue<int> Buffer { get; set; }
+        private Queue<int> Buffer { get; set; }
 
-        public BoundedBuffer(int capacity, Queue<int> buffer)
+        public BoundedBuffer(int capacity)
         {
             Capacity = capacity;
-            Buffer = buffer;
+            Capacity = -1;
         }
 
         public Boolean IsFull()
@@ -34,11 +34,13 @@ namespace ProducerConsumer_øvelse
         public void Put(int element)
         {
             Buffer.Enqueue(element);
+            Capacity = Capacity + 1;
         }
 
         public int Take()
         {
-            Buffer.Dequeue();
+            int takenNumber = Buffer.Dequeue();
+            return takenNumber;
         }
 
     }

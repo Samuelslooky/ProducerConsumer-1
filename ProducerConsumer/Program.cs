@@ -10,9 +10,9 @@ namespace ProducerConsumer_øvelse
     {
         static void Main(string[] args)
         {
-            BoundedBuffer buf = new BoundedBuffer(4);
+            BoundedBuffer buf = new BoundedBuffer(-1);
 
-            Producer prod = new Producer(buf, 10);
+            Producer prod = new Producer(buf, 0, 0);
             Consumer cons = new Consumer(buf);
 
             Parallel.Invoke(prod.Run, cons.Run);
