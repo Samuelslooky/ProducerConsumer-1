@@ -21,8 +21,8 @@ namespace ProducerConsumer_øvelse
         {
             for (int i = 0; i < 100; i++)
             {
-                int takenNumber = Buffer.Take();
-                Console.WriteLine("The number: " + takenNumber + "has been consumed");
+                int takenNumber2 = Buffer.Take();
+                Console.WriteLine("The number: " + takenNumber2 + "has been consumed");
 
             }  
 

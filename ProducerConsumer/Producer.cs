@@ -10,14 +10,12 @@ namespace ProducerConsumer_øvelse
 {
     public class Producer
     {
-        public int LastElement { get; set; }
-        public int LastItem { get; set; }
+        public int Max { get; set; }
         public BoundedBuffer Buffer { get; set; }
 
-        public Producer(BoundedBuffer buf, int lastElement, int lastItem)
+        public Producer(BoundedBuffer buf, int capacity)
         {
-            LastElement = lastElement;
-            LastItem = lastItem;
+            Max = capacity;
             Buffer = buf;
 
         }
@@ -25,7 +23,7 @@ namespace ProducerConsumer_øvelse
         public void Run()
         {
             Random rnd = new Random();
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < Max; i++)
             {
                 bool isfull = Buffer.IsFull();
                 if (isfull == false)
