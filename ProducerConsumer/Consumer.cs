@@ -10,20 +10,21 @@ namespace ProducerConsumer_øvelse
     public class Consumer
     {
         public BoundedBuffer Buffer { get; set; }
+        public int Max { get; set; }
 
-        public Consumer(BoundedBuffer buf)
+        public Consumer(BoundedBuffer buf, int howMany)
         {
+            Max = howMany;
             Buffer = buf;
 
         }
 
         public void Run()
         {
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < Max; i++)
             {
-                int takenNumber2 = Buffer.Take();
-                Console.WriteLine("The number: " + takenNumber2 + "has been consumed");
-
+                 Buffer.Take();
+              
             }  
 
 

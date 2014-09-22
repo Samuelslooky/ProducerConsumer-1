@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ProducerConsumer_øvelse
@@ -11,40 +12,54 @@ namespace ProducerConsumer_øvelse
     public class BoundedBuffer 
     {
         public int Capacity { get; set; }
-        public int HowMany { get; set; }
         private Queue<int> Buffer { get; set; }
 
-        public BoundedBuffer(int capacity, int howMany)
+        public BoundedBuffer(int capacity)
         {
             Capacity = capacity;
-            HowMany = howMany;
-            Capacity = -1;
+            
         }
 
         public Boolean IsFull()
         {
-            if (HowMany == Capacity)
-            {
-                return true;
-            }
-            else
+            if (Buffer.Count < this.Capacity)
             {
                 return false;
             }
+
+            return true;
+            
         }
 
         public void Put(int element)
         {
-            Buffer.Enqueue(element);
-            HowMany = HowMany + 1;
+            lock (Buffer)
+            {
+                if (!this.IsFull())
+                {
+                    Buffer.Enqueue(element);
+                    Console.WriteLine("Consumer just put {0} into the buffer", element);
+                    Monitor.PulseAll(Buffer);
+                } 
+            }
+            
+            
         }
 
         public int Take()
         {
-            int takenNumber = Buffer.Dequeue();
-            HowMany = HowMany - 1;
-            return takenNumber;
-
+            lock (Buffer)
+            {
+                while (Buffer.Count == 0)
+                {
+                    Monitor.Wait(Buffer);
+                }
+            
+                int takenNumber = Buffer.Dequeue();
+                Console.WriteLine("The number: {0} has been consumed", takenNumber);
+                return takenNumber; 
+            }
+            
         }
 
     }

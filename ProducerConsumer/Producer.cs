@@ -13,25 +13,32 @@ namespace ProducerConsumer_øvelse
         public int Max { get; set; }
         public BoundedBuffer Buffer { get; set; }
 
-        public Producer(BoundedBuffer buf, int capacity)
+        public Producer(BoundedBuffer buf, int howMany)
         {
-            Max = capacity;
+            Max = howMany;
             Buffer = buf;
 
         }
 
         public void Run()
         {
-            Random rnd = new Random();
             for (int i = 0; i < Max; i++)
             {
-                bool isfull = Buffer.IsFull();
-                if (isfull == false)
-                {
-                    int element = rnd.Next(1, 100);
-                    Buffer.Put(element);
-                }
-            }       
+                Buffer.Put(i);
+               
+            }
+            
+            //Random rnd = new Random();
+            //for (int i = 0; i < Max; i++)
+            //{
+            //    bool isfull = Buffer.IsFull();
+            //    if (isfull == false)
+            //    {
+            //        int element = rnd.Next(1, 100);
+            //        Buffer.Put(element);
+            //        Console.WriteLine("Producer just put {0} into the buffer", element);
+            //    }
+            //}       
             
         }
 
