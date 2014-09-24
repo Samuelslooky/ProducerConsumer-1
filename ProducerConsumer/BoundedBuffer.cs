@@ -11,19 +11,20 @@ namespace ProducerConsumer_øvelse
 {
     public class BoundedBuffer 
     {
-        public int Capacity { get; set; }
+        public int Max { get; set; }
         private Queue<int> Buffer { get; set; }
+        private bool LastItemServed { get; set; }
 
         public BoundedBuffer(int capacity)
         {
-            Capacity = capacity;
+            Max = capacity;
             this.Buffer = new Queue<int>();
             
         }
 
         public Boolean IsFull()
         {
-            if (this.Buffer.Count < this.Capacity)
+            if (this.Buffer.Count < this.Max)
             {
                 return false;
             }
@@ -54,15 +55,31 @@ namespace ProducerConsumer_øvelse
         {
             lock (this.Buffer)
             {
+                if (this.LastItemServed)
+                {
+                    return -1;
+                }
+
                 while (this.Buffer.Count == 0)
                 {
                     Monitor.Wait(this.Buffer);
+
+                    if (this.LastItemServed)
+                    {
+                        return -1;
+                    }
                 }
             
-                int takenNumber = this.Buffer.Dequeue();
-                Console.WriteLine("The number: {0} has been consumed from thread {1}", takenNumber, Thread.CurrentThread.ManagedThreadId);
+                int temp = this.Buffer.Dequeue();
+                Console.WriteLine("The number: {0} has been consumed from thread {1}", temp, Thread.CurrentThread.ManagedThreadId);
                 Monitor.PulseAll(this.Buffer);
-                return takenNumber; 
+
+                if (temp == -1)
+                {
+                    this.LastItemServed = true;
+                }
+
+                return temp; 
             }
             
         }

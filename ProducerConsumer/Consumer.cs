@@ -20,14 +20,12 @@ namespace ProducerConsumer_øvelse
 
         public void Run()
         {
-            int temp = Buffer.Take();
-              
-            while (temp != -1)
+            int temp;
+
+            do
             {
                 temp = this.Buffer.Take();
-            }
-
-
+            } while (temp != -1);
         }
 
     }
