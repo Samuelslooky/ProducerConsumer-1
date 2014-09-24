@@ -60,7 +60,7 @@ namespace ProducerConsumer_øvelse
                 }
             
                 int takenNumber = this.Buffer.Dequeue();
-                Console.WriteLine("The number: {0} has been consumed", takenNumber);
+                Console.WriteLine("The number: {0} has been consumed from thread {1}", takenNumber, Thread.CurrentThread.ManagedThreadId);
                 Monitor.PulseAll(this.Buffer);
                 return takenNumber; 
             }

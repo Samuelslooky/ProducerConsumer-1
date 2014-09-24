@@ -12,20 +12,20 @@ namespace ProducerConsumer_øvelse
         public BoundedBuffer Buffer { get; set; }
         public int Max { get; set; }
 
-        public Consumer(BoundedBuffer buf, int howMany)
+        public Consumer(BoundedBuffer buf)
         {
-            Max = howMany;
             Buffer = buf;
 
         }
 
         public void Run()
         {
-            for (int i = 0; i < Max; i++)
-            {
-                 Buffer.Take();
+            int temp = Buffer.Take();
               
-            }  
+            while (temp != -1)
+            {
+                temp = this.Buffer.Take();
+            }
 
 
         }

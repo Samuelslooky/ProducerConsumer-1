@@ -22,12 +22,14 @@ namespace ProducerConsumer_øvelse
 
         public void Run()
         {
-            for (int i = 0; i < Max; i++)
+            for (int i = 0; i < this.Max; i++)
             {
-                Buffer.Put(i);
+                this.Buffer.Put(i);
                
             }
             
+            this.Buffer.Put(-1);
+
             //Random rnd = new Random();
             //for (int i = 0; i < Max; i++)
             //{
