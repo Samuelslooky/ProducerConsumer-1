@@ -17,12 +17,13 @@ namespace ProducerConsumer_øvelse
         public BoundedBuffer(int capacity)
         {
             Capacity = capacity;
+            this.Buffer = new Queue<int>();
             
         }
 
         public Boolean IsFull()
         {
-            if (Buffer.Count < this.Capacity)
+            if (this.Buffer.Count < this.Capacity)
             {
                 return false;
             }
@@ -33,14 +34,17 @@ namespace ProducerConsumer_øvelse
 
         public void Put(int element)
         {
-            lock (Buffer)
+            lock (this.Buffer)
             {
-                if (!this.IsFull())
+                while (this.IsFull())
                 {
-                    Buffer.Enqueue(element);
+                    Monitor.Wait(this.Buffer);
+                }
+
+                    this.Buffer.Enqueue(element);
                     Console.WriteLine("Consumer just put {0} into the buffer", element);
-                    Monitor.PulseAll(Buffer);
-                } 
+                    Monitor.PulseAll(this.Buffer);
+                
             }
             
             
@@ -48,15 +52,16 @@ namespace ProducerConsumer_øvelse
 
         public int Take()
         {
-            lock (Buffer)
+            lock (this.Buffer)
             {
-                while (Buffer.Count == 0)
+                while (this.Buffer.Count == 0)
                 {
-                    Monitor.Wait(Buffer);
+                    Monitor.Wait(this.Buffer);
                 }
             
-                int takenNumber = Buffer.Dequeue();
+                int takenNumber = this.Buffer.Dequeue();
                 Console.WriteLine("The number: {0} has been consumed", takenNumber);
+                Monitor.PulseAll(this.Buffer);
                 return takenNumber; 
             }
             
